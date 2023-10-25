@@ -1,13 +1,11 @@
 package com.slutprojekt.JimmyKarlsson;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
+import com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton;
+
+public class App {
+	public static void main(String[] args) {
+		System.out.println("Hello World!");
+
+		LoggerSingleton.getInstance().info("Hello World!");
+	}
 }
