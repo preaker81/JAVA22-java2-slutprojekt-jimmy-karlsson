@@ -1,18 +1,23 @@
 package com.slutprojekt.JimmyKarlsson.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO;
 
 public class LoggerSingleton {
 	private static LoggerSingleton instance;
-
-	private Logger logger;
+	private BufferedWriter writer;
 
 	private LoggerSingleton() {
-		logger = LogManager.getLogger(LoggerSingleton.class);
+		try {
+			writer = new BufferedWriter(new FileWriter("log.txt", true));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	// Public method to get the singleton instance
 	public static synchronized LoggerSingleton getInstance() {
 		if (instance == null) {
 			instance = new LoggerSingleton();
@@ -20,14 +25,13 @@ public class LoggerSingleton {
 		return instance;
 	}
 
-	// Logging methods
-	public void info(String message) {
-		logger.info(message);
+	public synchronized void log(WorkerLogDTO logData) {
+		try {
+			writer.write(logData.toString());
+			writer.newLine();
+			writer.flush(); // Flush för att säkerställa att all data är skriven
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-
-	public void error(String message) {
-		logger.error(message);
-	}
-
-	// Add more methods to expose other logging levels if needed
 }

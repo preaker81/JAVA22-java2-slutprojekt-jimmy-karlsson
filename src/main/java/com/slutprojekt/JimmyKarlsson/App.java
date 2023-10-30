@@ -1,11 +1,10 @@
 package com.slutprojekt.JimmyKarlsson;
 
-import com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton;
+import com.slutprojekt.JimmyKarlsson.controller.Facade;
 
 public class App {
 	public static void main(String[] args) {
-		System.out.println("Hello World!");
-
-		LoggerSingleton.getInstance().info("Hello World!");
+		Facade facade = new Facade(100); // Assuming buffer capacity is 100
+		facade.showGUI();
 	}
 }

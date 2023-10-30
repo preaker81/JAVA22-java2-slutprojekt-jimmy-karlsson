@@ -1,0 +1,35 @@
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@111400c8
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@382989ab
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@1c362191
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@2932c473
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@2de0fc84
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@510e47c7
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@7c19dede
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@43379c72
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@2e8cd4d8
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@6c8d5747
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@2f158574
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@76a20d24
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@70935bd8
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@4643f705
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@45fee49c
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@23531a2a
+com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO@49f4d803
+WorkerLogDTO{numberOfProducers=0, numberOfConsumers=0, producerInterval=0, consumerInterval=0, workerDifference=0, lowResourceWarning=0.0, highResourceWarning=0.0, averageResources=0.0}
+WorkerLogDTO{numberOfProducers=0, numberOfConsumers=0, producerInterval=0, consumerInterval=0, workerDifference=0, lowResourceWarning=0.0, highResourceWarning=0.0, averageResources=0.0}
+WorkerLogDTO{numberOfProducers=0, numberOfConsumers=0, producerInterval=0, consumerInterval=0, workerDifference=0, lowResourceWarning=0.0, highResourceWarning=0.0, averageResources=0.0}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=10, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=0, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=11, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=16, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=22, numberOfConsumers=5, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=0, numberOfConsumers=3, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=15, numberOfConsumers=3, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
+WorkerLogDTO{numberOfProducers=15, numberOfConsumers=3, producerInterval=1000, consumerInterval=2000, workerDifference=5, lowResourceWarning=0.1, highResourceWarning=0.9, averageResources=0.5}
