@@ -41,4 +41,8 @@ public class Buffer {
 	public int getCapacity() {
 		return this.buffer.remainingCapacity() + this.buffer.size();
 	}
+	
+    public int getCurrentSize() {
+        return this.buffer.size();
+    }
 }

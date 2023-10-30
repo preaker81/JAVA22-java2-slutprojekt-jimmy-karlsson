@@ -21,8 +21,14 @@ public class LoadBalancer {
 		this.executor = Executors.newCachedThreadPool();
 	}
 
-	public Buffer getBuffer() {
-		return this.buffer;
+	public void initializeConsumers() {
+		int randomConsumerCount = HelperMethods.getRandomIntBetween(3, 15);
+		for (int i = 0; i < randomConsumerCount; i++) {
+			Consumer consumer = new Consumer(1, buffer);
+			Thread consumerThread = new Thread(consumer);
+			consumerThreads.add(consumerThread);
+			executor.execute(consumerThread);
+		}
 	}
 
 	public void addProducer(int delay, Item item) {
@@ -43,14 +49,8 @@ public class LoadBalancer {
 		}
 	}
 
-	public void initializeConsumers() {
-		int randomConsumerCount = HelperMethods.getRandomIntBetween(3, 15);
-		for (int i = 0; i < randomConsumerCount; i++) {
-			Consumer consumer = new Consumer(1, buffer);
-			Thread consumerThread = new Thread(consumer);
-			consumerThreads.add(consumerThread);
-			executor.execute(consumerThread);
-		}
+	public Buffer getBuffer() {
+		return this.buffer;
 	}
 
 	public int getProducerCount() {
