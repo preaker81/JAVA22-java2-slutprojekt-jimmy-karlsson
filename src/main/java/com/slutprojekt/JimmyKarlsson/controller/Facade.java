@@ -15,6 +15,7 @@ import com.slutprojekt.JimmyKarlsson.view.SwingGUI;
 public class Facade implements PropertyChangeListener {
 
 	private final LoadBalancer loadBalancer;
+	private LoggerSingleton loggerSingleton;
 	private final SwingGUI swingGUI;
 	private Timer timer;
 
@@ -23,52 +24,59 @@ public class Facade implements PropertyChangeListener {
 		swingGUI = new SwingGUI(this);
 		loadBalancer.getBuffer().addPropertyChangeListener(this);
 		loadBalancer.initializeConsumers();
+		loggerSingleton = LoggerSingleton.getInstance();
 
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				WorkerLogDTO logData = collectLogData(); // Collect the data you need to log
-				LoggerSingleton.getInstance().log(logData); // Log data through Singleton Logger
+				WorkerLogDTO logData = collectLogData();
+				loggerSingleton.logStatistics(logData.getProducedItems(), logData.getConsumedItems(),
+						logData.getAverageBufferStatus());
 
-				// Update the text area in the Swing GUI to display log data.
 				swingGUI.getTextArea().append(logData.toString() + "\n");
 			}
-		}, 0, 10000); // Update every 10 seconds
-
+		}, 0, 10000);
 	}
 
-	// This method will be called whenever the buffer size changes
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		int bufferSize = (int) evt.getNewValue();
 		int bufferCapacity = loadBalancer.getBuffer().getCapacity();
 		swingGUI.updateProgressBar(bufferSize, bufferCapacity);
+
+		if ((double) bufferSize / bufferCapacity <= 0.10) {
+			loggerSingleton.logLowBufferWarning();
+		} else if ((double) bufferSize / bufferCapacity >= 0.90) {
+			loggerSingleton.logHighBufferWarning();
+		}
 	}
 
 	public void addProducer() {
-		// Customize these values as needed
+
 		int delay = HelperMethods.getRandomIntBetween(1, 10);
 		Item item = new Item();
 		loadBalancer.addProducer(delay, item);
+		loggerSingleton.logProducerInfo(loadBalancer.getProducerThreads().size(), 1, 0);
 	}
 
 	public void stopProducer() {
 		loadBalancer.removeProducer();
+		loggerSingleton.logProducerInfo(loadBalancer.getProducerThreads().size(), 0, 1);
 	}
 
-	// In Facade.java
 	public WorkerLogDTO collectLogData() {
 		WorkerLogDTO logData = new WorkerLogDTO();
+		logData.setProducerIntervals(loadBalancer.getProducerIntervals());
 
-		logData.setNumberOfProducers(loadBalancer.getProducerThreads().size());
-		logData.setNumberOfConsumers(loadBalancer.getConsumerThreads().size());
-		logData.setProducerInterval(1000);
-		logData.setConsumerInterval(2000);
-		logData.setWorkerDifference(5);
-		logData.setLowResourceWarning(0.1);
-		logData.setHighResourceWarning(0.9);
-		logData.setAverageResources(0.5);
+		// TODO: Replace with dynamic value
+		logData.setProducedItems(50);
+		logData.setConsumedItems(40);
+		logData.setAverageBufferStatus(60);
+
+		// Log producer intervals
+		loggerSingleton.logProducerIntervals(logData.getProducerIntervals());
+
 		return logData;
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import com.slutprojekt.JimmyKarlsson.utils.HelperMethods;
 
@@ -24,11 +25,10 @@ public class LoadBalancer {
 		return this.buffer;
 	}
 
-	// Dynamically add a new Producer thread and start it
 	public void addProducer(int delay, Item item) {
 		Producer producer = new Producer(delay, buffer, item);
 		Thread producerThread = new Thread(producer);
-		producerInstances.add(producer); // Add this line
+		producerInstances.add(producer);
 		producerThreads.add(producerThread);
 		executor.execute(producerThread);
 	}
@@ -37,13 +37,12 @@ public class LoadBalancer {
 	public void removeProducer() {
 		if (!producerThreads.isEmpty()) {
 			Thread toRemove = producerThreads.remove(producerThreads.size() - 1);
-			Producer producerInstance = producerInstances.remove(producerInstances.size() - 1); // Add this line
-			producerInstance.shutdown(); // Add this line to gracefully shut down the Producer
+			Producer producerInstance = producerInstances.remove(producerInstances.size() - 1);
+			producerInstance.shutdown();
 			toRemove.interrupt();
 		}
 	}
 
-	// Initialize and store a specific random number of Consumer threads
 	public void initializeConsumers() {
 		int randomConsumerCount = HelperMethods.getRandomIntBetween(3, 15);
 		for (int i = 0; i < randomConsumerCount; i++) {
@@ -54,11 +53,19 @@ public class LoadBalancer {
 		}
 	}
 
+	public int getProducerCount() {
+		return producerThreads.size();
+	}
+
 	public List<Thread> getProducerThreads() {
 		return producerThreads;
 	}
 
 	public List<Thread> getConsumerThreads() {
 		return consumerThreads;
+	}
+
+	public List<Integer> getProducerIntervals() {
+		return producerInstances.stream().map(Producer::getDelay).collect(Collectors.toList());
 	}
 }

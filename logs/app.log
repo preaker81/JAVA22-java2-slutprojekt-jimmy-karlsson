@@ -37,3 +37,168 @@
 10:28:57.176 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Added a new producer with delay: 6
 10:28:57.367 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Added a new producer with delay: 2
 10:28:57.569 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Added a new producer with delay: 3
+14:46:44.573 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: []
+14:46:44.589 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:46:47.512 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 1, added: 1, removed: 0
+14:46:47.513 [pool-1-thread-7] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:47.700 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 2, added: 1, removed: 0
+14:46:47.701 [pool-1-thread-8] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:47.891 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 3, added: 1, removed: 0
+14:46:47.891 [pool-1-thread-9] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:48.093 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 4, added: 1, removed: 0
+14:46:48.093 [pool-1-thread-10] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:48.318 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 5, added: 1, removed: 0
+14:46:48.318 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:48.510 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 6, added: 1, removed: 0
+14:46:48.511 [pool-1-thread-12] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:48.724 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 7, added: 1, removed: 0
+14:46:48.724 [pool-1-thread-13] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:48.930 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 8, added: 1, removed: 0
+14:46:48.931 [pool-1-thread-14] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.129 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 9, added: 1, removed: 0
+14:46:49.129 [pool-1-thread-15] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.311 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 10, added: 1, removed: 0
+14:46:49.312 [pool-1-thread-16] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.320 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.511 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 11, added: 1, removed: 0
+14:46:49.512 [pool-1-thread-17] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.512 [pool-1-thread-6] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.703 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 12, added: 1, removed: 0
+14:46:49.703 [pool-1-thread-18] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.725 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.894 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 13, added: 1, removed: 0
+14:46:49.894 [pool-1-thread-19] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.896 [pool-1-thread-9] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:49.933 [pool-1-thread-2] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:50.132 [pool-1-thread-3] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:50.320 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:50.726 [pool-1-thread-13] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:50.727 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:50.974 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 14, added: 1, removed: 0
+14:46:50.974 [pool-1-thread-20] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.130 [pool-1-thread-15] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.176 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 15, added: 1, removed: 0
+14:46:51.177 [pool-1-thread-21] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.322 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.326 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.391 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 16, added: 1, removed: 0
+14:46:51.391 [pool-1-thread-22] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.593 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 17, added: 1, removed: 0
+14:46:51.593 [pool-1-thread-23] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.702 [pool-1-thread-8] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.705 [pool-1-thread-18] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.705 [pool-1-thread-4] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.728 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.772 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 18, added: 1, removed: 0
+14:46:51.772 [pool-1-thread-24] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.896 [pool-1-thread-9] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.931 [pool-1-thread-14] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.963 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 19, added: 1, removed: 0
+14:46:51.963 [pool-1-thread-25] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:51.975 [pool-1-thread-6] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.132 [pool-1-thread-2] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.177 [pool-1-thread-3] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.313 [pool-1-thread-16] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.323 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.326 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.512 [pool-1-thread-12] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.706 [pool-1-thread-18] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.708 [pool-1-thread-4] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.728 [pool-1-thread-13] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.730 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.974 [pool-1-thread-20] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:52.977 [pool-1-thread-6] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.095 [pool-1-thread-10] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.131 [pool-1-thread-15] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.132 [pool-1-thread-2] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.178 [pool-1-thread-3] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.178 [pool-1-thread-21] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.325 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.329 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.514 [pool-1-thread-7] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.708 [pool-1-thread-18] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.710 [pool-1-thread-4] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.732 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.774 [pool-1-thread-24] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.897 [pool-1-thread-9] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:53.979 [pool-1-thread-6] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.134 [pool-1-thread-2] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.181 [pool-1-thread-3] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.328 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.332 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.570 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 2, 2, 5, 6, 2, 6]
+14:46:54.571 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:46:54.710 [pool-1-thread-18] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.713 [pool-1-thread-4] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.729 [pool-1-thread-13] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.734 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.933 [pool-1-thread-14] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.978 [pool-1-thread-20] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:54.980 [pool-1-thread-6] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.133 [pool-1-thread-15] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.137 [pool-1-thread-2] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.179 [pool-1-thread-21] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.182 [pool-1-thread-3] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.315 [pool-1-thread-16] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.330 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.333 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.516 [pool-1-thread-17] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.704 [pool-1-thread-8] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.711 [pool-1-thread-18] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.715 [pool-1-thread-4] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.735 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.776 [pool-1-thread-24] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.900 [pool-1-thread-9] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:55.981 [pool-1-thread-6] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.138 [pool-1-thread-2] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.183 [pool-1-thread-3] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.331 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.335 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.392 [pool-1-thread-22] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.515 [pool-1-thread-12] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.712 [pool-1-thread-18] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.717 [pool-1-thread-4] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.732 [pool-1-thread-13] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.738 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.981 [pool-1-thread-20] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:56.983 [pool-1-thread-6] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.135 [pool-1-thread-15] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.139 [pool-1-thread-2] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.182 [pool-1-thread-21] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.186 [pool-1-thread-3] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.334 [pool-1-thread-11] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.337 [pool-1-thread-5] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.596 [pool-1-thread-23] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.721 [pool-1-thread-4] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.740 [pool-1-thread-1] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:46:57.777 [pool-1-thread-24] WARN  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Buffer is 10% or lower.
+14:47:04.571 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 2, 2, 5, 6, 2, 6]
+14:47:04.572 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:47:14.571 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 2, 2, 5, 6, 2, 6]
+14:47:14.572 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:47:24.571 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 2, 2, 5, 6, 2, 6]
+14:47:24.572 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:47:26.426 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 18, added: 0, removed: 1
+14:47:28.730 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 17, added: 0, removed: 1
+14:47:33.278 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 16, added: 0, removed: 1
+14:47:34.572 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 2, 2, 5]
+14:47:34.572 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:47:43.951 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 15, added: 0, removed: 1
+14:47:44.574 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 2, 2]
+14:47:44.575 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:47:49.959 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 14, added: 0, removed: 1
+14:47:52.986 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 13, added: 0, removed: 1
+14:47:54.575 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9]
+14:47:54.575 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:48:04.575 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9]
+14:48:04.576 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:48:07.128 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 14, added: 1, removed: 0
+14:48:14.576 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 7]
+14:48:14.577 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:48:16.207 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 13, added: 0, removed: 1
+14:48:16.803 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 14, added: 1, removed: 0
+14:48:24.576 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 3]
+14:48:24.577 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00
+14:48:27.873 [AWT-EventQueue-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer amount: 15, added: 1, removed: 0
+14:48:34.576 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Producer intervals: [6, 4, 2, 5, 1, 4, 2, 3, 2, 3, 6, 1, 9, 3, 6]
+14:48:34.576 [Timer-0] INFO  com.slutprojekt.JimmyKarlsson.utils.LoggerSingleton - Produced: 50, Consumed: 40, Avg Buffer: 60,00

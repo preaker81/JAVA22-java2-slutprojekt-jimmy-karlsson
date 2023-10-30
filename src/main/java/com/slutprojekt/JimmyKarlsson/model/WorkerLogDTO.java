@@ -1,85 +1,48 @@
 package com.slutprojekt.JimmyKarlsson.model;
 
+import java.util.List;
+
 public class WorkerLogDTO {
-	private int numberOfProducers;
-	private int numberOfConsumers;
-	private long producerInterval;
-	private long consumerInterval;
-	private int workerDifference;
-	private double lowResourceWarning;
-	private double highResourceWarning;
-	private double averageResources;
+	private List<Integer> producerIntervals;
+	private int producedItems;
+	private int consumedItems;
+	private double averageBufferStatus;
+
+	public List<Integer> getProducerIntervals() {
+		return producerIntervals;
+	}
+
+	public void setProducerIntervals(List<Integer> producerIntervals) {
+		this.producerIntervals = producerIntervals;
+	}
+
+	public int getProducedItems() {
+		return producedItems;
+	}
+
+	public void setProducedItems(int producedItems) {
+		this.producedItems = producedItems;
+	}
+
+	public int getConsumedItems() {
+		return consumedItems;
+	}
+
+	public void setConsumedItems(int consumedItems) {
+		this.consumedItems = consumedItems;
+	}
+
+	public double getAverageBufferStatus() {
+		return averageBufferStatus;
+	}
+
+	public void setAverageBufferStatus(double averageBufferStatus) {
+		this.averageBufferStatus = averageBufferStatus;
+	}
 
 	@Override
 	public String toString() {
-		return "WorkerLogDTO{" + "numberOfProducers=" + numberOfProducers + ", numberOfConsumers=" + numberOfConsumers
-				+ ", producerInterval=" + producerInterval + ", consumerInterval=" + consumerInterval
-				+ ", workerDifference=" + workerDifference + ", lowResourceWarning=" + lowResourceWarning
-				+ ", highResourceWarning=" + highResourceWarning + ", averageResources=" + averageResources + '}';
+		return "WorkerLogDTO{" + "producerIntervals=" + producerIntervals + ", producedItems=" + producedItems
+				+ ", consumedItems=" + consumedItems + ", averageBufferStatus=" + averageBufferStatus + '}';
 	}
-
-	public int getNumberOfProducers() {
-		return numberOfProducers;
-	}
-
-	public void setNumberOfProducers(int numberOfProducers) {
-		this.numberOfProducers = numberOfProducers;
-	}
-
-	public int getNumberOfConsumers() {
-		return numberOfConsumers;
-	}
-
-	public void setNumberOfConsumers(int numberOfConsumers) {
-		this.numberOfConsumers = numberOfConsumers;
-	}
-
-	public long getProducerInterval() {
-		return producerInterval;
-	}
-
-	public void setProducerInterval(long producerInterval) {
-		this.producerInterval = producerInterval;
-	}
-
-	public long getConsumerInterval() {
-		return consumerInterval;
-	}
-
-	public void setConsumerInterval(long consumerInterval) {
-		this.consumerInterval = consumerInterval;
-	}
-
-	public int getWorkerDifference() {
-		return workerDifference;
-	}
-
-	public void setWorkerDifference(int workerDifference) {
-		this.workerDifference = workerDifference;
-	}
-
-	public double getLowResourceWarning() {
-		return lowResourceWarning;
-	}
-
-	public void setLowResourceWarning(double lowResourceWarning) {
-		this.lowResourceWarning = lowResourceWarning;
-	}
-
-	public double getHighResourceWarning() {
-		return highResourceWarning;
-	}
-
-	public void setHighResourceWarning(double highResourceWarning) {
-		this.highResourceWarning = highResourceWarning;
-	}
-
-	public double getAverageResources() {
-		return averageResources;
-	}
-
-	public void setAverageResources(double averageResources) {
-		this.averageResources = averageResources;
-	}
-
 }
