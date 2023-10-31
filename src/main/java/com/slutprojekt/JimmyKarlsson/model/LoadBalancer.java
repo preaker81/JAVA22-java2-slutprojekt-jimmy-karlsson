@@ -9,18 +9,21 @@ import java.util.stream.Collectors;
 import com.slutprojekt.JimmyKarlsson.utils.HelperMethods;
 
 public class LoadBalancer {
-
+	// Lists to hold the producer and consumer threads and instances
 	private final List<Thread> producerThreads = new ArrayList<>();
 	private final List<Thread> consumerThreads = new ArrayList<>();
 	private final List<Producer> producerInstances = new ArrayList<>();
-	private final Buffer buffer;
-	private final ExecutorService executor;
 
+	private final Buffer buffer; // Shared buffer
+	private final ExecutorService executor; // Executor service to manage threads
+
+	// Constructor
 	public LoadBalancer(int bufferCapacity) {
 		this.buffer = new Buffer(bufferCapacity);
 		this.executor = Executors.newCachedThreadPool();
 	}
 
+	// Initialize consumers with random count
 	public void initializeConsumers() {
 		int randomConsumerCount = HelperMethods.getRandomIntBetween(3, 15);
 		for (int i = 0; i < randomConsumerCount; i++) {
@@ -31,6 +34,7 @@ public class LoadBalancer {
 		}
 	}
 
+	// Add a new producer
 	public void addProducer(int delay, Item item) {
 		Producer producer = new Producer(delay, buffer, item);
 		Thread producerThread = new Thread(producer);
@@ -39,7 +43,7 @@ public class LoadBalancer {
 		executor.execute(producerThread);
 	}
 
-	// Remove the last added Producer thread
+	// Remove the last added producer
 	public void removeProducer() {
 		if (!producerThreads.isEmpty()) {
 			Thread toRemove = producerThreads.remove(producerThreads.size() - 1);
@@ -49,6 +53,7 @@ public class LoadBalancer {
 		}
 	}
 
+	// Getter methods
 	public Buffer getBuffer() {
 		return this.buffer;
 	}

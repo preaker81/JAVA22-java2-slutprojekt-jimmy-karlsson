@@ -34,6 +34,7 @@ public class SwingGUI implements LogObserver {
 	private Facade facade;
 	private int numberOfProducers;
 	private Deque<String> logStack = new LinkedList<>();
+	private static final int MAX_LOG_COUNT = 100;
 
 	public SwingGUI(final Facade facade) {
 		this.facade = facade;
@@ -47,6 +48,7 @@ public class SwingGUI implements LogObserver {
 		frame = new JFrame("Production regulator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(600, 500);
+		frame.setLocationRelativeTo(null);
 	}
 
 	private void initComponents() {
@@ -104,34 +106,43 @@ public class SwingGUI implements LogObserver {
 
 	private void initTextArea() {
 		textArea = new JTextArea();
-		textArea.setPreferredSize(new Dimension(400, 300)); // Set width and height
 	}
 
 	private void layoutComponents() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		// Layout buttons and label
+		// Declare panel size variables
+		int panel1Height = 100;
+		int panel3Height = 50;
+
+		// Panel1: Layout buttons, label, and progress bar
+		JPanel panel1 = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(plusButton);
 		buttonPanel.add(numberLabel);
 		buttonPanel.add(minusButton);
+		panel1.add(buttonPanel, BorderLayout.NORTH);
+		panel1.add(progressBar, BorderLayout.SOUTH);
+		panel1.setPreferredSize(new Dimension(frame.getWidth(), panel1Height)); // Fixed height
 
-		// Layout load and save buttons
-		JPanel loadSavePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		loadSavePanel.add(loadButton);
-		loadSavePanel.add(saveButton);
+		// Panel2: Layout text area with scroll bars
+		JPanel panel2 = new JPanel(new BorderLayout());
+		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		// Layout text area
-		JScrollPane scroll = new JScrollPane(textArea);
-		JPanel textAndButtonsPanel = new JPanel(new BorderLayout());
-		textAndButtonsPanel.add(scroll, BorderLayout.CENTER);
-		textAndButtonsPanel.add(loadSavePanel, BorderLayout.SOUTH);
+		panel2.add(scroll, BorderLayout.CENTER);
+
+		// Panel3: Layout load and save buttons
+		JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		panel3.add(loadButton);
+		panel3.add(saveButton);
+		panel3.setPreferredSize(new Dimension(frame.getWidth(), panel3Height)); // Fixed height
 
 		// Add all to main panel
-		panel.add(buttonPanel, BorderLayout.NORTH);
-		panel.add(progressBar, BorderLayout.CENTER);
-		panel.add(textAndButtonsPanel, BorderLayout.SOUTH);
+		panel.add(panel1, BorderLayout.NORTH);
+		panel.add(panel2, BorderLayout.CENTER);
+		panel.add(panel3, BorderLayout.SOUTH);
 
 		frame.add(panel);
 	}
@@ -155,24 +166,27 @@ public class SwingGUI implements LogObserver {
 	}
 
 	public void appendToLog(String message) {
-		logStack.addFirst(message); // Add the message at the top
+		int caretPosition = textArea.getCaretPosition(); // Capture the current caret position
+
+		// Begränsa antalet loggar
+		if (logStack.size() >= MAX_LOG_COUNT) {
+			logStack.removeLast();
+		}
+		logStack.addFirst(message);
 		StringBuilder logs = new StringBuilder();
 		for (String log : logStack) {
 			logs.append(log).append("\n");
 		}
 		textArea.setText(logs.toString());
-	}
 
-	public JTextArea getTextArea() {
-		return textArea;
+		textArea.setCaretPosition(caretPosition); // Set the caret position back to its original position
 	}
 
 	@Override
-	public void updateLog(String message) { // <-- Implement the method from LogObserver
+	public void updateLog(String message) {
 		appendToLog(message);
 	}
 
-	// Method to update progress bar color based on current value
 	public void updateProgressBarColor() {
 		int value = progressBar.getValue();
 		int max = progressBar.getMaximum();
@@ -198,6 +212,6 @@ public class SwingGUI implements LogObserver {
 	@Override
 	public void updateLog(WorkerLogDTO logData) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -2,31 +2,31 @@ package com.slutprojekt.JimmyKarlsson.model;
 
 public class Consumer implements Runnable {
 
-	private final Buffer buffer; // Use your Buffer class instead of BlockingQueue directly
-	private final int delay; // Delay in seconds between item removals
+	private final Buffer buffer; // Shared buffer between producers and consumers
+	private final int delay; // Delay in seconds
 
-	// Updated constructor to take delay and buffer
+	// Constructor
 	public Consumer(int delay, Buffer buffer) {
 		this.buffer = buffer;
 		this.delay = delay;
 	}
 
+	// This is the core logic for the Consumer. It's an overridden method from
+	// Runnable interface.
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				// Using buffer's BlockingQueue to take the item
-				buffer.take();
-
-				// Delay for 'delay' seconds
-				Thread.sleep(delay * 1000);
+				buffer.take(); // Take item from the buffer
+				Thread.sleep(delay * 1000); // Simulate work by sleeping
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
-				return;
+				return; // Exit if interrupted
 			}
 		}
 	}
 
+	// Getter methods
 	public Buffer getBuffer() {
 		return buffer;
 	}
@@ -34,5 +34,4 @@ public class Consumer implements Runnable {
 	public int getDelay() {
 		return delay;
 	}
-
 }

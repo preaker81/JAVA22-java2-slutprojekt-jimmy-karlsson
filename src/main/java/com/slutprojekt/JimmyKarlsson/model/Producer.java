@@ -2,38 +2,39 @@ package com.slutprojekt.JimmyKarlsson.model;
 
 public class Producer implements Runnable {
 
-	private final Buffer buffer; // Use your Buffer class instead of BlockingQueue directly
-	private final int delay; // Delay in seconds between item insertions
-	private final Item item; // The Item object to be produced
-	private volatile boolean shutdown = false;
+	private final Buffer buffer; // Shared buffer between producers and consumers
+	private final int delay; // Delay in seconds
+	private final Item item; // The item to be produced
+	private volatile boolean shutdown = false; // Flag to shut down the producer
 
-	// Updated constructor to take delay, buffer, and item
+	// Constructor
 	public Producer(int delay, Buffer buffer, Item item) {
 		this.buffer = buffer;
 		this.delay = delay;
 		this.item = item;
 	}
 
+	// Shutdown the producer
 	public void shutdown() {
-		this.shutdown = true; // Simply set the shutdown flag
+		this.shutdown = true;
 	}
 
+	// This is the core logic for the Producer. It's an overridden method from
+	// Runnable interface.
 	@Override
 	public void run() {
 		while (!shutdown) {
 			try {
-				// Using the item instance variable
-				buffer.put(item); // Use the encapsulated put method in Buffer
-
-				// Delay for 'delay' seconds
-				Thread.sleep(delay * 1000);
+				buffer.put(item); // Put item into the buffer
+				Thread.sleep(delay * 1000); // Simulate time needed to produce item
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
-				return;
+				return; // Exit if interrupted
 			}
 		}
 	}
 
+	// Getter methods
 	public Buffer getBuffer() {
 		return buffer;
 	}
