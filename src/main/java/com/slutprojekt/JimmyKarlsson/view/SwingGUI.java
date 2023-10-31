@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -17,8 +19,10 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import com.slutprojekt.JimmyKarlsson.controller.Facade;
+import com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO;
+import com.slutprojekt.JimmyKarlsson.utils.interfaces.LogObserver;
 
-public class SwingGUI {
+public class SwingGUI implements LogObserver {
 	private JFrame frame;
 	private JProgressBar progressBar;
 	private JTextArea textArea;
@@ -29,6 +33,7 @@ public class SwingGUI {
 	private JLabel numberLabel;
 	private Facade facade;
 	private int numberOfProducers;
+	private Deque<String> logStack = new LinkedList<>();
 
 	public SwingGUI(final Facade facade) {
 		this.facade = facade;
@@ -150,11 +155,21 @@ public class SwingGUI {
 	}
 
 	public void appendToLog(String message) {
-		textArea.append(message + "\n");
+		logStack.addFirst(message); // Add the message at the top
+		StringBuilder logs = new StringBuilder();
+		for (String log : logStack) {
+			logs.append(log).append("\n");
+		}
+		textArea.setText(logs.toString());
 	}
 
 	public JTextArea getTextArea() {
 		return textArea;
+	}
+
+	@Override
+	public void updateLog(String message) { // <-- Implement the method from LogObserver
+		appendToLog(message);
 	}
 
 	// Method to update progress bar color based on current value
@@ -178,5 +193,11 @@ public class SwingGUI {
 
 	public void show() {
 		frame.setVisible(true);
+	}
+
+	@Override
+	public void updateLog(WorkerLogDTO logData) {
+		// TODO Auto-generated method stub
+		
 	}
 }

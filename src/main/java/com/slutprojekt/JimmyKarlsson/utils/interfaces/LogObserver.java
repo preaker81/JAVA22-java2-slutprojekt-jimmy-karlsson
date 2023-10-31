@@ -4,4 +4,6 @@ import com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO;
 
 public interface LogObserver {
 	void updateLog(WorkerLogDTO logData);
+
+	void updateLog(String message);
 }

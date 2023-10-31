@@ -20,7 +20,8 @@ public class Facade implements PropertyChangeListener {
 		swingGUI = new SwingGUI(this);
 		loadBalancer.getBuffer().addPropertyChangeListener(this);
 		loadBalancer.initializeConsumers();
-		loggerSingleton = LoggerSingleton.getInstance(loadBalancer); // <-- Pass LoadBalancer instance here
+		loggerSingleton = LoggerSingleton.getInstance(loadBalancer);
+		loggerSingleton.addObserver(swingGUI);
 	}
 
 	@Override

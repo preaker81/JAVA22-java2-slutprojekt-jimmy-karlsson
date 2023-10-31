@@ -1,23 +1,28 @@
 package com.slutprojekt.JimmyKarlsson.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO;
-import com.slutprojekt.JimmyKarlsson.utils.interfaces.LogObserver;
-import com.slutprojekt.JimmyKarlsson.model.LoadBalancer; // <-- Added for LoadBalancer
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.slutprojekt.JimmyKarlsson.model.LoadBalancer;
+import com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO;
+import com.slutprojekt.JimmyKarlsson.utils.interfaces.LogObserver;
 
 public class LoggerSingleton implements LogObserver {
 	private static LoggerSingleton instance;
 	private static final Logger logger = LogManager.getLogger(LoggerSingleton.class);
 	private ScheduledExecutorService scheduler;
-	private LoadBalancer loadBalancer; // <-- Add this line
-	private Queue<Integer> bufferSizeHistory; // <-- Add this line to keep track of history
-	private int sampleCounter; // <-- Add this line to count samples
+	private LoadBalancer loadBalancer;
+	private Queue<Integer> bufferSizeHistory;
+	private int sampleCounter;
+	private List<LogObserver> observers = new ArrayList<>();
 
 	private LoggerSingleton(LoadBalancer loadBalancer) {
 		this.loadBalancer = loadBalancer;
@@ -61,37 +66,70 @@ public class LoggerSingleton implements LogObserver {
 		logProducerIntervals(logData.getProducerIntervals());
 	}
 
+	public void addObserver(LogObserver observer) {
+		observers.add(observer);
+	}
+
+	public void removeObserver(LogObserver observer) {
+		observers.remove(observer);
+	}
+
+	private void notifyObservers(String message) {
+		for (LogObserver observer : observers) {
+			observer.updateLog(message);
+		}
+	}
+
 	public void shutdown() {
 		scheduler.shutdown();
 	}
 
 	// Loggar genomsnittlig buffert var 10:e sekund
 	public synchronized void logAverageBuffer(double avgBuffer) {
-		logger.info(String.format("Avg Buffer: %.2f%%", avgBuffer));
+		String logMessage = String.format("Avg Buffer: %.2f%%", avgBuffer);
+		logger.info(logMessage);
+		notifyObservers(logMessage);
 	}
 
-	// Loggar information om producer antal, tillagda och borttagna element
+	// Log Producer Info
 	public synchronized void logProducerInfo(int amount, int added, int removed) {
-		logger.info(String.format("Producer amount: %d, added: %d, removed: %d", amount, added, removed));
+		String logMessage = String.format("Producer amount: %d, added: %d, removed: %d", amount, added, removed);
+		logger.info(logMessage);
+		notifyObservers(logMessage);
 	}
 
-	// Loggar information om alla Producers fördröjningar
+	// Log Producer Intervals
 	public synchronized void logProducerIntervals(java.util.List<Integer> intervals) {
-		logger.info(String.format("Producer intervals: %s", intervals.toString()));
+		String logMessage = String.format("Producer intervals: %s", intervals.toString());
+		logger.info(logMessage);
+		notifyObservers(logMessage);
 	}
 
-	// Loggar en varning om buffern är 10% eller lägre
+	// Log Low Buffer Warning
 	public synchronized void logLowBufferWarning() {
-		logger.warn("Buffer is 10% or lower.");
+		String logMessage = "Buffer is 10% or lower.";
+		logger.warn(logMessage);
+		notifyObservers(logMessage);
 	}
 
-	// Loggar en varning om buffern är 90% eller högre
+	// Log High Buffer Warning
 	public synchronized void logHighBufferWarning() {
-		logger.warn("Buffer is 90% or higher.");
+		String logMessage = "Buffer is 90% or higher.";
+		logger.warn(logMessage);
+		notifyObservers(logMessage);
 	}
 
-	// Loggar statistik var 10:e sekund
+	// Log Statistics
 	public synchronized void logStatistics(int produced, int consumed, double avgBuffer) {
-		logger.info(String.format("Produced: %d, Consumed: %d, Avg Buffer: %.2f", produced, consumed, avgBuffer));
+		String logMessage = String.format("Produced: %d, Consumed: %d, Avg Buffer: %.2f", produced, consumed,
+				avgBuffer);
+		logger.info(logMessage);
+		notifyObservers(logMessage);
+	}
+
+	@Override
+	public void updateLog(String message) {
+		// TODO Auto-generated method stub
+
 	}
 }
