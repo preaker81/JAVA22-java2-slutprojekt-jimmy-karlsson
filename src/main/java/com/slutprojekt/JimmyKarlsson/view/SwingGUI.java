@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -91,8 +92,9 @@ public class SwingGUI implements PropertyChangeListener {
 			}
 		});
 
-		// File filter for .dat files
+		// Set filter to .dat files and the desktop to default location
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("DAT files", "dat");
+		File desktop = new File(System.getProperty("user.home"), "Desktop");
 
 		loadButton = new JButton("Load");
 		loadButton.addActionListener(new AbstractAction() {
@@ -101,6 +103,7 @@ public class SwingGUI implements PropertyChangeListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(desktop); // set desktop as default
 				fileChooser.setFileFilter(filter); // apply the filter
 				int returnValue = fileChooser.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -117,6 +120,7 @@ public class SwingGUI implements PropertyChangeListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(desktop); // set desktop as default
 				fileChooser.setFileFilter(filter); // apply the filter
 				int returnValue = fileChooser.showSaveDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
