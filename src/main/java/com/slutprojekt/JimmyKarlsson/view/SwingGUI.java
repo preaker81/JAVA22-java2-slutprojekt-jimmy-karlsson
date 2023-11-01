@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Deque;
-import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -33,12 +33,12 @@ public class SwingGUI implements PropertyChangeListener {
 	private JLabel numberLabel;
 	private Facade facade;
 	private int numberOfProducers;
-	private Deque<String> logStack = new LinkedList<>();
+	private Deque<String> logStack = new ConcurrentLinkedDeque<>();
 	private static final int MAX_LOG_COUNT = 100;
 
 	public SwingGUI(final Facade facade) {
 		this.facade = facade;
-		this.numberOfProducers = 0; // Initialize to zero
+		this.numberOfProducers = 0;
 		initFrame();
 		initComponents();
 		layoutComponents();
@@ -69,7 +69,7 @@ public class SwingGUI implements PropertyChangeListener {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					facade.addProducer();
-					incrementNumberOfProducers(); // Update local state and UI
+					incrementNumberOfProducers();
 				} catch (Exception ex) {
 					appendToLog("Failed to add producer: " + ex.getMessage());
 				}
@@ -85,7 +85,7 @@ public class SwingGUI implements PropertyChangeListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				facade.stopProducer();
-				decrementNumberOfProducers(); // Update local state and UI
+				decrementNumberOfProducers();
 			}
 		});
 
@@ -102,10 +102,10 @@ public class SwingGUI implements PropertyChangeListener {
 	private void initProgressBar() {
 		progressBar = new JProgressBar();
 		Dimension dim = new Dimension(400, 20);
-		progressBar.setPreferredSize(dim); // Preferred height set to 20
-		progressBar.setMinimumSize(dim); // Minimum height set to 20
-		progressBar.setMaximumSize(dim); // Maximum height set to 20
-		progressBar.setStringPainted(true); // Enables the painting of text
+		progressBar.setPreferredSize(dim);
+		progressBar.setMinimumSize(dim);
+		progressBar.setMaximumSize(dim);
+		progressBar.setStringPainted(true);
 	}
 
 	private void initTextArea() {
@@ -116,11 +116,9 @@ public class SwingGUI implements PropertyChangeListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		// Declare panel size variables
 		int panel1Height = 100;
 		int panel3Height = 50;
 
-		// Panel1: Layout buttons, label, and progress bar
 		JPanel panel1 = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(plusButton);
@@ -128,22 +126,19 @@ public class SwingGUI implements PropertyChangeListener {
 		buttonPanel.add(minusButton);
 		panel1.add(buttonPanel, BorderLayout.NORTH);
 		panel1.add(progressBar, BorderLayout.SOUTH);
-		panel1.setPreferredSize(new Dimension(frame.getWidth(), panel1Height)); // Fixed height
+		panel1.setPreferredSize(new Dimension(frame.getWidth(), panel1Height));
 
-		// Panel2: Layout text area with scroll bars
 		JPanel panel2 = new JPanel(new BorderLayout());
 		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		panel2.add(scroll, BorderLayout.CENTER);
 
-		// Panel3: Layout load and save buttons
 		JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panel3.add(loadButton);
 		panel3.add(saveButton);
-		panel3.setPreferredSize(new Dimension(frame.getWidth(), panel3Height)); // Fixed height
+		panel3.setPreferredSize(new Dimension(frame.getWidth(), panel3Height));
 
-		// Add all to main panel
 		panel.add(panel1, BorderLayout.NORTH);
 		panel.add(panel2, BorderLayout.CENTER);
 		panel.add(panel3, BorderLayout.SOUTH);
@@ -166,24 +161,26 @@ public class SwingGUI implements PropertyChangeListener {
 	public void updateProgressBar(int value, int maximum) {
 		progressBar.setMaximum(maximum);
 		progressBar.setValue(value);
-		updateProgressBarColor(); // Update the color based on the current value
+		updateProgressBarColor();
 	}
 
 	public void appendToLog(String message) {
-		int caretPosition = textArea.getCaretPosition(); // Capture the current caret position
+		int caretPosition = textArea.getCaretPosition();
 
-		// Begränsa antalet loggar
 		if (logStack.size() >= MAX_LOG_COUNT) {
-			logStack.removeLast();
+			logStack.pollLast();
 		}
-		logStack.addFirst(message);
+
+		logStack.offerFirst(message);
+
 		StringBuilder logs = new StringBuilder();
 		for (String log : logStack) {
 			logs.append(log).append("\n");
 		}
+
 		textArea.setText(logs.toString());
 
-		textArea.setCaretPosition(caretPosition); // Set the caret position back to its original position
+		textArea.setCaretPosition(caretPosition);
 	}
 
 	@Override

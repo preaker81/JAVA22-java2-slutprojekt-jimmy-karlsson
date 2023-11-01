@@ -2,6 +2,7 @@ package com.slutprojekt.JimmyKarlsson.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ import com.slutprojekt.JimmyKarlsson.utils.HelperMethods;
 
 public class LoadBalancer {
 	// Lists to hold the producer and consumer threads and instances
-	private final List<Thread> producerThreads = new ArrayList<>();
+	private final List<Thread> producerThreads = new CopyOnWriteArrayList<>();
 	private final List<Thread> consumerThreads = new ArrayList<>();
 	private final List<Producer> producerInstances = new ArrayList<>();
 
@@ -27,10 +28,11 @@ public class LoadBalancer {
 	public void initializeConsumers() {
 		int randomConsumerCount = HelperMethods.getRandomIntBetween(3, 15);
 		for (int i = 0; i < randomConsumerCount; i++) {
-			Consumer consumer = new Consumer(1, buffer);
+			Consumer consumer = new Consumer(HelperMethods.getRandomIntBetween(1, 10), buffer);
 			Thread consumerThread = new Thread(consumer);
 			consumerThreads.add(consumerThread);
 			executor.execute(consumerThread);
+			System.out.println(consumer.getDelay());
 		}
 	}
 
