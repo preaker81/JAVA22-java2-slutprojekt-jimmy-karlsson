@@ -1,8 +1,8 @@
 package com.slutprojekt.JimmyKarlsson.utils;
 
-import java.util.ArrayList;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -12,18 +12,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.slutprojekt.JimmyKarlsson.model.LoadBalancer;
-import com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO;
-import com.slutprojekt.JimmyKarlsson.utils.interfaces.LogObserver;
 
-public class LoggerSingleton implements LogObserver {
+public class LoggerSingleton {
 
 	private static final Logger logger = LogManager.getLogger(LoggerSingleton.class);
 	private static LoggerSingleton instance; // Singleton instance
 	private ScheduledExecutorService scheduler; // Scheduler for periodic tasks
 	private LoadBalancer loadBalancer; // Reference to the LoadBalancer model
-	private List<LogObserver> observers = new ArrayList<>(); // List of observers
 	private Queue<Integer> bufferSizeHistory; // History of buffer sizes
 	private int sampleCounter; // Count of sample taken
+	private final PropertyChangeSupport logSupport;
 
 	// Private constructor for Singleton pattern
 	private LoggerSingleton(LoadBalancer loadBalancer) {
@@ -33,6 +31,7 @@ public class LoggerSingleton implements LogObserver {
 		// Initialize scheduler
 		this.scheduler = Executors.newScheduledThreadPool(1);
 		scheduler.scheduleAtFixedRate(this::sampleBuffer, 0, 1, TimeUnit.SECONDS);
+		this.logSupport = new PropertyChangeSupport(this);
 	}
 
 	// Singleton getInstance method
@@ -57,29 +56,6 @@ public class LoggerSingleton implements LogObserver {
 		}
 	}
 
-	// Update log based on WorkerLogDTO data
-	@Override
-	public void updateLog(WorkerLogDTO logData) {
-		logProducerIntervals(logData.getProducerIntervals());
-	}
-
-	// Add observer
-	public void addObserver(LogObserver observer) {
-		observers.add(observer);
-	}
-
-	// Remove observer
-	public void removeObserver(LogObserver observer) {
-		observers.remove(observer);
-	}
-
-	// Notify all observers
-	private void notifyObservers(String message) {
-		for (LogObserver observer : observers) {
-			observer.updateLog(message);
-		}
-	}
-
 	// Shutdown the scheduler
 	public void shutdown() {
 		scheduler.shutdown();
@@ -95,11 +71,21 @@ public class LoggerSingleton implements LogObserver {
 
 	// Logging methods (Producer Info, Intervals, Warnings)
 
-	// Log Producer Info
-	public synchronized void logProducerInfo(int amount, int added, int removed) {
-		String logMessage = String.format("Producer amount: %d, added: %d, removed: %d", amount, added, removed);
+	// Add method to fire property changes
+	private void notifyLogListeners(String logMessage) {
+		logSupport.firePropertyChange("log", null, logMessage);
+	}
+
+	// Add method to attach property change listener
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		logSupport.addPropertyChangeListener(listener);
+	}
+
+	// Existing logging methods: Modify to use notifyLogListeners
+	public void logProducerInfo(int producerCount, int added, int removed) {
+		String logMessage = "Producer Info: Count = " + producerCount + ", Added = " + added + ", Removed = " + removed;
 		logger.info(logMessage);
-		notifyObservers(logMessage);
+		notifyLogListeners(logMessage);
 	}
 
 	// Log Producer Intervals
@@ -123,9 +109,4 @@ public class LoggerSingleton implements LogObserver {
 		notifyObservers(logMessage);
 	}
 
-	@Override
-	public void updateLog(String message) {
-		// TODO Auto-generated method stub
-
-	}
 }

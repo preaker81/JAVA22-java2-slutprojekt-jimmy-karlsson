@@ -2,6 +2,7 @@ package com.slutprojekt.JimmyKarlsson.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import com.slutprojekt.JimmyKarlsson.model.Item;
 import com.slutprojekt.JimmyKarlsson.model.LoadBalancer;
@@ -14,9 +15,12 @@ public class Facade implements PropertyChangeListener {
 	private final LoadBalancer loadBalancer; // Model
 	private final LoggerSingleton loggerSingleton; // Logger utility
 	private final SwingGUI swingGUI; // View
+	private final PropertyChangeSupport support;
+	private static final String LOG_PROPERTY = "log";
 
 	// Constructor
 	public Facade(int bufferCapacity) {
+		support = new PropertyChangeSupport(this);
 		// Initialize the model (LoadBalancer)
 		this.loadBalancer = new LoadBalancer(bufferCapacity);
 		// Initialize the view (SwingGUI)
@@ -27,7 +31,9 @@ public class Facade implements PropertyChangeListener {
 		loadBalancer.initializeConsumers();
 		// Initialize logger and add observer
 		this.loggerSingleton = LoggerSingleton.getInstance(loadBalancer);
-		loggerSingleton.addObserver(swingGUI);
+		// Attach SwingGUI as a property change listener to LoggerSingleton
+		this.loggerSingleton.addPropertyChangeListener(swingGUI); // Add this line
+		support.addPropertyChangeListener(swingGUI);
 	}
 
 	// Listener to observe changes in the model (Buffer)
@@ -35,19 +41,17 @@ public class Facade implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		int bufferSize = (int) evt.getNewValue();
 		int bufferCapacity = loadBalancer.getBuffer().getCapacity();
-		// Update the progress bar in the view
 		swingGUI.updateProgressBar(bufferSize, bufferCapacity);
-		// Log warnings if needed
-		logBufferWarnings(bufferSize, bufferCapacity);
+
+		// Use method to encapsulate logging logic
+		possiblyLogBufferWarnings(bufferSize, bufferCapacity);
 	}
 
-	// Log buffer warnings if conditions are met
-	private void logBufferWarnings(int bufferSize, int bufferCapacity) {
+	private void possiblyLogBufferWarnings(int bufferSize, int bufferCapacity) {
 		double bufferRatio = (double) bufferSize / bufferCapacity;
-		if (bufferRatio <= 0.10) {
-			loggerSingleton.logLowBufferWarning();
-		} else if (bufferRatio >= 0.90) {
-			loggerSingleton.logHighBufferWarning();
+		if (bufferRatio <= 0.10 || bufferRatio >= 0.90) {
+			String warningMessage = bufferRatio <= 0.10 ? "Low buffer warning!" : "High buffer warning!";
+			support.firePropertyChange(LOG_PROPERTY, null, warningMessage); // Using a constant for the property name
 		}
 	}
 

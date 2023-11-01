@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -19,10 +21,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import com.slutprojekt.JimmyKarlsson.controller.Facade;
-import com.slutprojekt.JimmyKarlsson.model.WorkerLogDTO;
-import com.slutprojekt.JimmyKarlsson.utils.interfaces.LogObserver;
 
-public class SwingGUI implements LogObserver {
+public class SwingGUI implements PropertyChangeListener {
 	private JFrame frame;
 	private JProgressBar progressBar;
 	private JTextArea textArea;
@@ -67,8 +67,12 @@ public class SwingGUI implements LogObserver {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				facade.addProducer();
-				incrementNumberOfProducers(); // Update local state and UI
+				try {
+					facade.addProducer();
+					incrementNumberOfProducers(); // Update local state and UI
+				} catch (Exception ex) {
+					appendToLog("Failed to add producer: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -183,8 +187,15 @@ public class SwingGUI implements LogObserver {
 	}
 
 	@Override
-	public void updateLog(String message) {
-		appendToLog(message);
+	public void propertyChange(PropertyChangeEvent evt) {
+		String propertyName = evt.getPropertyName();
+
+		if ("log".equals(propertyName)) {
+			String newLogMessage = (String) evt.getNewValue();
+			appendToLog(newLogMessage);
+		} else if ("progress".equals(propertyName)) {
+			// You can add progress bar update logic here if needed
+		}
 	}
 
 	public void updateProgressBarColor() {
@@ -207,11 +218,5 @@ public class SwingGUI implements LogObserver {
 
 	public void show() {
 		frame.setVisible(true);
-	}
-
-	@Override
-	public void updateLog(WorkerLogDTO logData) {
-		// TODO Auto-generated method stub
-
 	}
 }
