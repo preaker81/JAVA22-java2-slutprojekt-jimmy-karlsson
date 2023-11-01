@@ -26,9 +26,9 @@ public class LoggerSingleton {
 		this.loadBalancer = loadBalancer;
 		this.bufferSizeHistory = new ConcurrentLinkedQueue<>();
 		this.sampleCounter = 0;
+		this.logSupport = new PropertyChangeSupport(this);
 		this.scheduler = Executors.newScheduledThreadPool(1);
 		scheduler.scheduleAtFixedRate(this::sampleBuffer, 0, 1, TimeUnit.SECONDS);
-		this.logSupport = new PropertyChangeSupport(this);
 	}
 
 	public static synchronized LoggerSingleton getInstance(LoadBalancer loadBalancer) {

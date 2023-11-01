@@ -6,7 +6,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class Buffer {
-	private final BlockingQueue<Item> buffer; // The actual buffer
+
+	private BlockingQueue<Item> buffer; // The actual buffer
 	private final PropertyChangeSupport support; // Property change support for listeners
 
 	// Constructor
@@ -50,5 +51,17 @@ public class Buffer {
 	// Get current buffer size
 	public int getCurrentSize() {
 		return this.buffer.size();
+	}
+
+	public void setCapacity(int newCapacity) {
+		// Assuming the buffer isn't accessed by other threads while changing capacity
+		BlockingQueue<Item> newBuffer = new ArrayBlockingQueue<>(newCapacity);
+		newBuffer.addAll(this.buffer);
+		this.buffer = newBuffer;
+	}
+
+	public void clear() {
+		// Clear the buffer
+		this.buffer.clear();
 	}
 }

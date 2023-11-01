@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.slutprojekt.JimmyKarlsson.controller.Facade;
 
@@ -89,8 +91,44 @@ public class SwingGUI implements PropertyChangeListener {
 			}
 		});
 
+		// File filter for .dat files
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("DAT files", "dat");
+
 		loadButton = new JButton("Load");
+		loadButton.addActionListener(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileFilter(filter); // apply the filter
+				int returnValue = fileChooser.showOpenDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+					facade.loadStateFromFile(filePath);
+				}
+			}
+		});
+
 		saveButton = new JButton("Save");
+		saveButton.addActionListener(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileFilter(filter); // apply the filter
+				int returnValue = fileChooser.showSaveDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+					// Add .dat extension if not present
+					if (!filePath.toLowerCase().endsWith(".dat")) {
+						filePath += ".dat";
+					}
+					facade.saveStateToFile(filePath);
+				}
+			}
+		});
 	}
 
 	private void initLabels() {

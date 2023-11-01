@@ -4,6 +4,7 @@ public class Consumer implements Runnable {
 
 	private final Buffer buffer; // Shared buffer between producers and consumers
 	private final int delay; // Delay in seconds
+	private volatile boolean shutdown = false;
 
 	// Constructor
 	public Consumer(int delay, Buffer buffer) {
@@ -15,7 +16,7 @@ public class Consumer implements Runnable {
 	// Runnable interface.
 	@Override
 	public void run() {
-		while (true) {
+		while (!shutdown) {
 			try {
 				buffer.take(); // Take item from the buffer
 				Thread.sleep(delay * 1000); // Simulate work by sleeping
@@ -26,7 +27,12 @@ public class Consumer implements Runnable {
 		}
 	}
 
+	public void shutdown() {
+		this.shutdown = true;
+	}
+
 	// Getter methods
+
 	public Buffer getBuffer() {
 		return buffer;
 	}
