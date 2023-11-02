@@ -56,8 +56,11 @@ public class LoggerSingleton {
 	}
 
 	private synchronized void logAverageBuffer() {
+		int bufferCapacity = loadBalancer.getBuffer().getCapacity();
 		double avgBuffer = bufferSizeHistory.stream().mapToInt(Integer::intValue).average().orElse(0.0);
-		String logMessage = String.format("Avg Buffer: %.2f%%", avgBuffer);
+		double avgBufferPercentage = (avgBuffer / bufferCapacity) * 100;
+		avgBufferPercentage = Math.min(avgBufferPercentage, 100.0);
+		String logMessage = String.format("Avg Buffer: %.2f%%", avgBufferPercentage);
 		logger.info(logMessage);
 		fireLogChanged(logMessage);
 	}

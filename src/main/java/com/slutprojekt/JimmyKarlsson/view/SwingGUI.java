@@ -21,6 +21,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.slutprojekt.JimmyKarlsson.controller.Facade;
@@ -93,7 +94,6 @@ public class SwingGUI implements PropertyChangeListener {
 			}
 		});
 
-		// Set filter to .dat files and the desktop to default location
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("DAT files", "dat");
 		File desktop = new File(System.getProperty("user.home"), "Desktop");
 
@@ -104,8 +104,8 @@ public class SwingGUI implements PropertyChangeListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(desktop); // set desktop as default
-				fileChooser.setFileFilter(filter); // apply the filter
+				fileChooser.setCurrentDirectory(desktop);
+				fileChooser.setFileFilter(filter);
 				int returnValue = fileChooser.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					String filePath = fileChooser.getSelectedFile().getAbsolutePath();
@@ -121,12 +121,12 @@ public class SwingGUI implements PropertyChangeListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(desktop); // set desktop as default
-				fileChooser.setFileFilter(filter); // apply the filter
+				fileChooser.setCurrentDirectory(desktop);
+				fileChooser.setFileFilter(filter);
 				int returnValue = fileChooser.showSaveDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-					// Add .dat extension if not present
+
 					if (!filePath.toLowerCase().endsWith(".dat")) {
 						filePath += ".dat";
 					}
@@ -189,6 +189,11 @@ public class SwingGUI implements PropertyChangeListener {
 		frame.add(panel);
 	}
 
+	public void setNumberOfProducers(int numberOfProducers) {
+		this.numberOfProducers = numberOfProducers;
+		numberLabel.setText(Integer.toString(numberOfProducers));
+	}
+
 	private void incrementNumberOfProducers() {
 		numberOfProducers++;
 		numberLabel.setText(Integer.toString(numberOfProducers));
@@ -199,11 +204,6 @@ public class SwingGUI implements PropertyChangeListener {
 			numberOfProducers--;
 			numberLabel.setText(Integer.toString(numberOfProducers));
 		}
-	}
-
-	private void setNumberOfProducers(int numberOfProducers) {
-		this.numberOfProducers = numberOfProducers;
-		numberLabel.setText(Integer.toString(numberOfProducers));
 	}
 
 	public void updateProgressBar(int value, int maximum) {
@@ -238,12 +238,15 @@ public class SwingGUI implements PropertyChangeListener {
 		if ("log".equals(propertyName)) {
 			String newLogMessage = (String) evt.getNewValue();
 			appendToLog(newLogMessage);
-		} else if ("progress".equals(propertyName)) {
-			// You can add progress bar update logic here if needed
+		} else if ("bufferSize".equals(propertyName)) {
+			int newBufferSize = (Integer) evt.getNewValue();
+			int bufferCapacity = facade.getLoadBalancer().getBuffer().getCapacity();
+			updateProgressBar(newBufferSize, bufferCapacity);
 		}
 
-		if ("producerCount".equals(evt.getPropertyName())) {
+		if ("producerCount".equals(propertyName)) {
 			int newCount = (Integer) evt.getNewValue();
+			System.out.println("PropertyChange fired for producerCount: " + newCount);
 			setNumberOfProducers(newCount);
 		}
 	}
@@ -253,9 +256,9 @@ public class SwingGUI implements PropertyChangeListener {
 		int max = progressBar.getMaximum();
 		float percent = (float) value / max * 100;
 
-		Color dustyRed = new Color(153, 0, 0); // Red: 153, Green: 0, Blue: 0
-		Color dustyGreen = new Color(0, 153, 0); // Red: 0, Green: 153, Blue: 0
-		Color dustyYellow = new Color(153, 153, 0); // Red: 153, Green: 153, Blue: 0
+		Color dustyRed = new Color(153, 0, 0);
+		Color dustyGreen = new Color(0, 153, 0);
+		Color dustyYellow = new Color(153, 153, 0);
 
 		if (percent <= 10 || percent >= 90) {
 			progressBar.setForeground(dustyRed);
@@ -267,6 +270,6 @@ public class SwingGUI implements PropertyChangeListener {
 	}
 
 	public void show() {
-		frame.setVisible(true);
+		SwingUtilities.invokeLater(() -> frame.setVisible(true));
 	}
 }

@@ -17,7 +17,6 @@ public class LoadBalancer {
 	private final List<Producer> producerInstances = new ArrayList<>();
 	private final List<Consumer> consumerInstances = new ArrayList<>();
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
 	private final Buffer buffer;
 	private final ExecutorService executor;
 
@@ -34,6 +33,13 @@ public class LoadBalancer {
 			consumerThreads.add(consumerThread);
 			executor.execute(consumerThread);
 		}
+	}
+
+	public void shutdownConsumers() {
+		consumerThreads.forEach(Thread::interrupt);
+		consumerInstances.forEach(Consumer::shutdown);
+		consumerInstances.clear();
+		consumerThreads.clear();
 	}
 
 	public void addProducer(int delay, Item item) {
@@ -53,30 +59,22 @@ public class LoadBalancer {
 		}
 	}
 
-	public void shutdownConsumers() {
-		consumerThreads.forEach(Thread::interrupt);
-		consumerInstances.forEach(Consumer::shutdown);
-		consumerInstances.clear();
-		consumerThreads.clear();
-	}
-
-	public void restartConsumers() {
-		initializeConsumers();
-	}
-
 	public void shutdownProducers() {
-		producerThreads.forEach(Thread::interrupt);
-		producerInstances.forEach(Producer::shutdown);
+		for (Producer producer : producerInstances) {
+			producer.shutdown();
+		}
+		for (Thread producerThread : producerThreads) {
+			producerThread.interrupt();
+			try {
+				producerThread.join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+
+			}
+		}
+
 		producerInstances.clear();
 		producerThreads.clear();
-	}
-
-	public void restartProducers() {
-		producerInstances.forEach(producer -> {
-			Thread producerThread = new Thread(producer);
-			producerThreads.add(producerThread);
-			executor.execute(producerThread);
-		});
 	}
 
 	public LoadBalancerState extractState() {
@@ -85,20 +83,21 @@ public class LoadBalancer {
 	}
 
 	public void applyState(LoadBalancerState state) {
-		// Stop threads
 		shutdownConsumers();
 		shutdownProducers();
 
-		// Clear and reinitialize producers based on saved state
 		producerInstances.clear();
 		producerThreads.clear();
-		for (int delay : state.producerDelays()) {
-			addProducer(delay, new Item()); // You might want to use a saved Item here
-		}
-
-		// Clear and reinitialize consumers based on saved state
 		consumerInstances.clear();
 		consumerThreads.clear();
+
+		buffer.clear();
+		buffer.setCapacity(state.bufferCapacity());
+
+		for (int delay : state.producerDelays()) {
+			addProducer(delay, new Item());
+		}
+
 		for (int delay : state.consumerDelays()) {
 			Consumer consumer = new Consumer(delay, buffer);
 			Thread consumerThread = new Thread(consumer);
@@ -107,14 +106,6 @@ public class LoadBalancer {
 			executor.execute(consumerThread);
 		}
 
-		// Clear and reinitialize buffer based on saved state
-		// Assuming Buffer has a method to set its size or clear its existing elements
-		buffer.clear();
-		buffer.setCapacity(state.bufferCapacity());
-
-		// Restart threads
-		restartProducers();
-		restartConsumers();
 		pcs.firePropertyChange("producerCount", -1, getProducerCount());
 	}
 
@@ -123,9 +114,6 @@ public class LoadBalancer {
 	}
 
 	// Getter methods
-	public List<Producer> getProducerInstances() {
-		return new ArrayList<>(producerInstances);
-	}
 
 	public Buffer getBuffer() {
 		return this.buffer;
@@ -137,10 +125,6 @@ public class LoadBalancer {
 
 	public List<Thread> getProducerThreads() {
 		return producerThreads;
-	}
-
-	public List<Thread> getConsumerThreads() {
-		return consumerThreads;
 	}
 
 	public List<Integer> getProducerIntervals() {
