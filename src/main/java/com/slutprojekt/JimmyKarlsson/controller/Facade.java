@@ -235,9 +235,6 @@ public class Facade implements PropertyChangeListener {
 		SwingUtilities.invokeLater(task);
 	}
 
-	// The IOConsumer functional interface is not used in the provided code snippet.
-	// If it's a part of the full class, it should be documented where it is used.
-
 	/**
 	 * Gets the current instance of the load balancer.
 	 * 
