@@ -91,4 +91,8 @@ public class Facade implements PropertyChangeListener {
 		}
 	}
 
+	public LoadBalancer getLoadBalancer() {
+		return loadBalancer;
+	}
+
 }

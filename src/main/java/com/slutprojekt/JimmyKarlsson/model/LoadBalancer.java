@@ -1,5 +1,7 @@
 package com.slutprojekt.JimmyKarlsson.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -14,6 +16,7 @@ public class LoadBalancer {
 	private final List<Thread> consumerThreads = new ArrayList<>();
 	private final List<Producer> producerInstances = new ArrayList<>();
 	private final List<Consumer> consumerInstances = new ArrayList<>();
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private final Buffer buffer;
 	private final ExecutorService executor;
@@ -112,6 +115,11 @@ public class LoadBalancer {
 		// Restart threads
 		restartProducers();
 		restartConsumers();
+		pcs.firePropertyChange("producerCount", -1, getProducerCount());
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
 	}
 
 	// Getter methods

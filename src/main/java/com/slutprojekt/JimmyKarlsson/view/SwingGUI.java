@@ -42,6 +42,7 @@ public class SwingGUI implements PropertyChangeListener {
 	public SwingGUI(final Facade facade) {
 		this.facade = facade;
 		this.numberOfProducers = 0;
+		this.facade.getLoadBalancer().addPropertyChangeListener(this);
 		initFrame();
 		initComponents();
 		layoutComponents();
@@ -200,6 +201,11 @@ public class SwingGUI implements PropertyChangeListener {
 		}
 	}
 
+	private void setNumberOfProducers(int numberOfProducers) {
+		this.numberOfProducers = numberOfProducers;
+		numberLabel.setText(Integer.toString(numberOfProducers));
+	}
+
 	public void updateProgressBar(int value, int maximum) {
 		progressBar.setMaximum(maximum);
 		progressBar.setValue(value);
@@ -234,6 +240,11 @@ public class SwingGUI implements PropertyChangeListener {
 			appendToLog(newLogMessage);
 		} else if ("progress".equals(propertyName)) {
 			// You can add progress bar update logic here if needed
+		}
+
+		if ("producerCount".equals(evt.getPropertyName())) {
+			int newCount = (Integer) evt.getNewValue();
+			setNumberOfProducers(newCount);
 		}
 	}
 
