@@ -14,13 +14,7 @@ public class App {
 	 *             application).
 	 */
 	public static void main(String[] args) {
-		// Creates an instance of the Facade, passing an integer that could represent
-		// an initial configuration value or parameter for the facade (e.g., initial
-		// buffer size).
 		Facade facade = new Facade(100);
-
-		// Calls a method on the facade to display the graphical user interface.
-		// This encapsulates all the GUI initialization code within the Facade class.
 		facade.showGUI();
 	}
 }

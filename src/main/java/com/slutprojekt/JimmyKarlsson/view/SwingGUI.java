@@ -1,14 +1,29 @@
 package com.slutprojekt.JimmyKarlsson.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import javax.swing.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import com.slutprojekt.JimmyKarlsson.controller.Facade;
 
 /**
@@ -163,7 +178,7 @@ public class SwingGUI implements PropertyChangeListener {
 	 */
 	private void initProgressBar() {
 		progressBar = new JProgressBar();
-		Dimension dim = new Dimension(400, 20); // Define the dimensions of the progress bar.
+		Dimension dim = new Dimension(400, 30); // Define the dimensions of the progress bar.
 		progressBar.setPreferredSize(dim); // Apply the dimensions to ensure consistent size.
 		progressBar.setMinimumSize(dim);
 		progressBar.setMaximumSize(dim);
@@ -186,7 +201,7 @@ public class SwingGUI implements PropertyChangeListener {
 		panel.setLayout(new BorderLayout());
 
 		// Set the preferred height for the top and bottom panels
-		int panel1Height = 100;
+		int panel1Height = 90;
 		int panel3Height = 50;
 
 		// Panel 1: Contains buttons and progress bar
