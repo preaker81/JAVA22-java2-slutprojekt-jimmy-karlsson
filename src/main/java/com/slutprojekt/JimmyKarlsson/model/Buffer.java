@@ -6,15 +6,24 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * The Buffer class represents a thread-safe container for Item objects, with a
- * fixed capacity. It allows producer and consumer threads to safely add and
- * remove items, with support for notifying listeners about the size changes of
- * the buffer.
+ * The Buffer class provides a thread-safe mechanism for storing and
+ * transferring Item objects between producer and consumer threads. It
+ * implements a finite blocking queue with the ability to notify observers about
+ * changes in its capacity and content size, ensuring safe and efficient
+ * multi-threaded operations. The Buffer is designed to operate in any context
+ * where a fixed-size queue for items is required and the observation of content
+ * changes is necessary.
  */
 public class Buffer {
 
-	private BlockingQueue<Item> itemsQueue; // Thread-safe queue to hold items
-	private final PropertyChangeSupport propertyChangeSupport; // Utility class to manage property change listeners
+	// The queue that holds the items. It is thread-safe which ensures that
+	// put and take operations can happen concurrently without data corruption.
+	private BlockingQueue<Item> itemsQueue;
+
+	// This support class handles the observation mechanism, allowing external
+	// entities
+	// to subscribe and get notifications when the buffer's state changes.
+	private final PropertyChangeSupport propertyChangeSupport;
 
 	/**
 	 * Constructs a Buffer with the specified capacity.
@@ -22,118 +31,77 @@ public class Buffer {
 	 * @param capacity the fixed size of the buffer
 	 */
 	public Buffer(int capacity) {
+		// Initialize the queue with the given capacity.
 		this.itemsQueue = new ArrayBlockingQueue<>(capacity);
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
-	/**
-	 * Adds a PropertyChangeListener to the listener list.
-	 *
-	 * @param pcl the PropertyChangeListener to be added
-	 */
+	// Listener management methods
+
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 
-	/**
-	 * Removes a PropertyChangeListener from the listener list.
-	 *
-	 * @param pcl the PropertyChangeListener to be removed
-	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 
-	/**
-	 * Puts an item into the buffer, waiting if necessary for space to become
-	 * available.
-	 *
-	 * @param item the item to be added to the buffer
-	 * @throws InterruptedException if interrupted while waiting
-	 */
+	// Buffer operation methods
+
 	public void put(Item item) throws InterruptedException {
-		int oldSize = getCurrentSize(); // Store current size before adding new item
-		itemsQueue.put(item); // Adds the item, waits if no space is available
-		fireSizeChange(oldSize, getCurrentSize()); // Notify listeners of size change
+		int oldSize = getCurrentSize(); // Store the current size for later comparison.
+		itemsQueue.put(item); // Add the item, waiting if necessary for space to become available.
+		fireSizeChange(oldSize, getCurrentSize()); // Notify listeners if there's a size change.
 	}
 
-	/**
-	 * Takes an item from the buffer, waiting if necessary until an item becomes
-	 * available.
-	 *
-	 * @return the item from the front of the buffer
-	 * @throws InterruptedException if interrupted while waiting
-	 */
 	public Item take() throws InterruptedException {
-		int oldSize = getCurrentSize(); // Store current size before taking an item
-		Item item = itemsQueue.take(); // Removes and returns the head item, waits if necessary
-		fireSizeChange(oldSize, getCurrentSize()); // Notify listeners of size change
+		int oldSize = getCurrentSize(); // Store the current size for later comparison.
+		Item item = itemsQueue.take(); // Remove and return the head item, waiting if necessary.
+		fireSizeChange(oldSize, getCurrentSize()); // Notify listeners if there's a size change.
 		return item;
 	}
 
-	/**
-	 * Gets the total capacity of the buffer.
-	 *
-	 * @return the capacity of the buffer
-	 */
+	// Buffer property methods
+
 	public int getCapacity() {
+		// The total capacity is the sum of the remaining capacity and the current size.
 		return itemsQueue.remainingCapacity() + getCurrentSize();
 	}
 
-	/**
-	 * Gets the current number of items in the buffer.
-	 *
-	 * @return the current size of the buffer
-	 */
 	public int getCurrentSize() {
+		// The current size is the number of items present in the queue.
 		return itemsQueue.size();
 	}
 
-	/**
-	 * Resizes the buffer to the new capacity and fills it with a specified number
-	 * of new items.
-	 *
-	 * @param newCapacity the new capacity of the buffer
-	 * @param itemsToFill the number of items to fill the buffer with
-	 */
-	public synchronized void setCapacityAndFill(int newCapacity, int itemsToFill) {
+	// Special operations
 
+	public synchronized void setCapacityAndFill(int newCapacity, int itemsToFill) {
+		// Validate input to prevent misuse of the method.
 		if (newCapacity < itemsToFill) {
 			throw new IllegalArgumentException("New capacity cannot be less than the number of items to fill.");
 		}
 
-		int oldSize = getCurrentSize(); // Store current size for notification
+		int oldSize = getCurrentSize(); // Capture the current size for notification purposes.
 		BlockingQueue<Item> newBuffer = new ArrayBlockingQueue<>(newCapacity);
-		itemsQueue.drainTo(newBuffer, itemsToFill); // Drain items to new buffer
+		itemsQueue.drainTo(newBuffer, itemsToFill); // Drain the required number of items to the new buffer.
 
-		// Fill the new buffer with new items until it reaches the desired number
+		// Add new items to the buffer until it reaches the specified number.
 		while (newBuffer.size() < itemsToFill) {
-			newBuffer.add(new Item());
+			newBuffer.add(new Item()); // Potentially replace with actual item creation logic.
 		}
 
-		itemsQueue = newBuffer; // Replace the old buffer with the new buffer
-
-		// Notify listeners if the size has changed as a result of resizing
-		if (oldSize != getCurrentSize()) {
-			fireSizeChange(oldSize, getCurrentSize());
-		}
+		itemsQueue = newBuffer; // Replace the current buffer with the new buffer.
+		fireSizeChange(oldSize, getCurrentSize()); // Notify if the resize resulted in a size change.
 	}
 
-	/**
-	 * Clears all the items from the buffer.
-	 */
 	public void clear() {
-		this.itemsQueue.clear(); // Clear the queue of all items
+		itemsQueue.clear(); // Clears all items from the queue.
 	}
 
-	/**
-	 * Notifies listeners of a change in the buffer size.
-	 *
-	 * @param oldSize the size of the buffer before the change
-	 * @param newSize the size of the buffer after the change
-	 */
+	// Private helper methods
+
 	private void fireSizeChange(int oldSize, int newSize) {
-		propertyChangeSupport.firePropertyChange("bufferSize", oldSize, newSize); // Notify listeners of the property
-																					// change
+		// Notify all subscribed listeners about the size change.
+		propertyChangeSupport.firePropertyChange("bufferSize", oldSize, newSize);
 	}
 }

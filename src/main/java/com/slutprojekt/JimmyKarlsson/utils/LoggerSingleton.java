@@ -11,44 +11,47 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.slutprojekt.JimmyKarlsson.model.LoadBalancer;
+import com.slutprojekt.JimmyKarlsson.model.interfaces.BufferSizeProvider;
 
 /**
- * The LoggerSingleton class is designed to keep track of buffer size statistics
- * of a LoadBalancer and log this information periodically. It is implemented as
- * a singleton to ensure only one instance manages the logging throughout the
- * application. It also uses a scheduler to perform logging actions at fixed
- * intervals.
+ * A singleton class responsible for logging buffer size samples and statistics
+ * in a LoadBalancer environment. It provides mechanisms to track and log
+ * changes in the buffer over time.
  */
 public class LoggerSingleton {
 
-	private static final Logger logger = LogManager.getLogger(LoggerSingleton.class); // Logger instance to log
-																						// messages.
-	private static final int MAX_HISTORY_SIZE = 10; // Maximum number of historical buffer sizes to keep.
-	private static final int SAMPLE_THRESHOLD = 10; // Number of buffer samples after which the average should be
-													// logged.
+	private static final Logger logger = LogManager.getLogger(LoggerSingleton.class);
+	private static final int MAX_HISTORY_SIZE = 10; // Maximum number of buffer sizes to keep in history.
+	private static final int SAMPLE_THRESHOLD = 10; // Number of samples to collect before calculating the average.
+	private static LoggerSingleton instance;
 
-	private static LoggerSingleton instance; // Singleton instance of this class.
+	private final ScheduledExecutorService scheduler; // Handles the scheduling of buffer sampling.
+	private final BufferSizeProvider bufferSizeProvider; // Provides buffer size and capacity data.
+	private final ConcurrentLinkedQueue<Integer> bufferSizeHistory; // Stores the history of buffer sizes.
+	private final PropertyChangeSupport logSupport; // Used for observer pattern implementation.
+	private int sampleCounter; // Counts the number of samples taken.
 
-	private final ScheduledExecutorService scheduler; // Scheduler to perform tasks at fixed intervals.
-	private final LoadBalancer loadBalancer; // Reference to the LoadBalancer whose buffer is being monitored.
-	private final ConcurrentLinkedQueue<Integer> bufferSizeHistory; // Thread-safe queue to store buffer size history.
-	private final PropertyChangeSupport logSupport; // PropertyChangeSupport to notify listeners of log changes.
-	private int sampleCounter; // Counter for the number of samples taken.
-
-	private LoggerSingleton(LoadBalancer loadBalancer) {
-		this.loadBalancer = loadBalancer;
+	/**
+	 * Private constructor for LoggerSingleton.
+	 * 
+	 * @param bufferSizeProvider A provider for buffer size information, typically a
+	 *                           LoadBalancer.
+	 */
+	private LoggerSingleton(BufferSizeProvider bufferSizeProvider) {
+		this.bufferSizeProvider = bufferSizeProvider;
 		this.bufferSizeHistory = new ConcurrentLinkedQueue<>();
 		this.logSupport = new PropertyChangeSupport(this);
-		this.scheduler = Executors.newScheduledThreadPool(1); // Creates a single-threaded scheduler.
-		scheduleBufferSampling(); // Initialize the periodic buffer sampling task.
+		this.scheduler = Executors.newScheduledThreadPool(1); // Initializes a single-threaded scheduler.
+		scheduleBufferSampling(); // Start the periodic buffer size sampling.
 	}
 
 	/**
-	 * Synchronized method to get the single instance of LoggerSingleton, creating
-	 * it if necessary.
-	 *
-	 * @param loadBalancer The LoadBalancer whose buffer size will be logged.
-	 * @return The singleton instance of LoggerSingleton.
+	 * Returns the single instance of LoggerSingleton, creating it if it does not
+	 * exist.
+	 * 
+	 * @param loadBalancer The LoadBalancer that will be used as a
+	 *                     BufferSizeProvider.
+	 * @return The single instance of LoggerSingleton.
 	 */
 	public static synchronized LoggerSingleton getInstance(LoadBalancer loadBalancer) {
 		if (instance == null) {
@@ -58,44 +61,44 @@ public class LoggerSingleton {
 	}
 
 	/**
-	 * Schedules the buffer sampling task to run at fixed intervals.
+	 * Schedules the buffer size sampling task to run every second.
 	 */
 	private void scheduleBufferSampling() {
-		// Schedules a task to run every second starting immediately.
+		// Schedules the task to sample buffer size every second.
 		scheduler.scheduleAtFixedRate(this::sampleBuffer, 0, 1, TimeUnit.SECONDS);
 	}
 
 	/**
-	 * Samples the current buffer size from the LoadBalancer, updates history, and
-	 * logs if necessary.
+	 * Samples the current buffer size, updating history and logs if necessary.
 	 */
 	private void sampleBuffer() {
-		int currentBufferSize = loadBalancer.getBuffer().getCurrentSize(); // Get current buffer size.
-		updateBufferSizeHistory(currentBufferSize); // Update the history of buffer sizes.
+		int currentBufferSize = bufferSizeProvider.getCurrentSize();
+		updateBufferSizeHistory(currentBufferSize);
 		if (shouldLogAverage()) {
-			logAverageBuffer(); // Log the average buffer size if the sample threshold is reached.
-			resetSampleCounter(); // Reset the sample counter.
+			logAverageBuffer();
+			resetSampleCounter();
 		}
 	}
 
 	/**
-	 * Updates the buffer size history queue and increments the sample counter.
-	 *
-	 * @param bufferSize The new buffer size to add to the history.
+	 * Updates the history of buffer sizes and increments the sample counter.
+	 * 
+	 * @param bufferSize The new buffer size to be added to the history.
 	 */
 	private void updateBufferSizeHistory(int bufferSize) {
-		bufferSizeHistory.add(bufferSize); // Adds the new buffer size to the history.
+		bufferSizeHistory.add(bufferSize);
 		if (bufferSizeHistory.size() > MAX_HISTORY_SIZE) {
-			bufferSizeHistory.poll(); // Removes the oldest buffer size if history exceeds max size.
+			bufferSizeHistory.poll(); // Remove the oldest buffer size.
 		}
-		sampleCounter++; // Increment the number of samples taken.
+		sampleCounter++;
 	}
 
 	/**
-	 * Checks if the number of samples taken has reached the threshold to log the
-	 * average buffer size.
-	 *
-	 * @return True if the sample counter is greater than or equal to the threshold.
+	 * Determines if the average buffer size should be logged based on the sample
+	 * threshold.
+	 * 
+	 * @return True if the sample counter has reached the threshold, false
+	 *         otherwise.
 	 */
 	private boolean shouldLogAverage() {
 		return sampleCounter >= SAMPLE_THRESHOLD;
@@ -109,19 +112,19 @@ public class LoggerSingleton {
 	}
 
 	/**
-	 * Calculates the average buffer size, formats a log message, and logs it.
+	 * Calculates, formats, and logs the average buffer size as a percentage of
+	 * total capacity.
 	 */
 	private synchronized void logAverageBuffer() {
-		double avgBuffer = calculateAverageBufferSize(); // Calculate the average buffer size.
-		double avgBufferPercentage = calculateBufferPercentage(avgBuffer); // Calculate the percentage of the average
-																			// buffer size.
-		String logMessage = formatLogMessage(avgBufferPercentage); // Format the log message.
-		logInformation(logMessage); // Log the formatted message.
+		double avgBuffer = calculateAverageBufferSize();
+		double avgBufferPercentage = calculateBufferPercentage(avgBuffer);
+		String logMessage = formatLogMessage(avgBufferPercentage);
+		logInformation(logMessage);
 	}
 
 	/**
-	 * Calculates the average buffer size from the buffer size history.
-	 *
+	 * Calculates the average buffer size based on the recorded history.
+	 * 
 	 * @return The average buffer size.
 	 */
 	private double calculateAverageBufferSize() {
@@ -129,22 +132,21 @@ public class LoggerSingleton {
 	}
 
 	/**
-	 * Calculates the percentage of the average buffer size relative to its
-	 * capacity.
-	 *
-	 * @param averageBufferSize The average buffer size.
-	 * @return The percentage of the average buffer size.
+	 * Calculates the buffer usage percentage based on the average buffer size.
+	 * 
+	 * @param averageBufferSize The average buffer size to calculate the percentage
+	 *                          from.
+	 * @return The buffer usage percentage.
 	 */
 	private double calculateBufferPercentage(double averageBufferSize) {
-		int bufferCapacity = loadBalancer.getBuffer().getCapacity(); // Get the buffer's capacity.
-		double bufferPercentage = (averageBufferSize / bufferCapacity) * 100; // Calculate the buffer usage percentage.
-		return Math.min(bufferPercentage, 100.0); // Ensure the percentage does not exceed 100.
+		int bufferCapacity = bufferSizeProvider.getCapacity();
+		return Math.min((averageBufferSize / bufferCapacity) * 100, 100.0);
 	}
 
 	/**
-	 * Formats the log message for the average buffer size percentage.
-	 *
-	 * @param avgBufferPercentage The average buffer size percentage to log.
+	 * Formats the log message to include the average buffer usage percentage.
+	 * 
+	 * @param avgBufferPercentage The average buffer usage percentage.
 	 * @return The formatted log message.
 	 */
 	private String formatLogMessage(double avgBufferPercentage) {
@@ -152,48 +154,47 @@ public class LoggerSingleton {
 	}
 
 	/**
-	 * Logs the information message and notifies listeners.
-	 *
+	 * Logs information with INFO level and notifies listeners of a new log message.
+	 * 
 	 * @param message The message to log and notify about.
 	 */
 	private void logInformation(String message) {
-		logger.info(message); // Logs the message with INFO level.
-		fireLogChanged(message); // Notify listeners about the new log message.
+		logger.info(message);
+		fireLogChanged(message);
 	}
 
 	/**
-	 * Shuts down the scheduler and stops any further logging.
+	 * Shuts down the scheduler service, stopping any further buffer sampling.
 	 */
 	public void shutdown() {
 		scheduler.shutdown();
 	}
 
 	/**
-	 * Notifies listeners that the log has changed.
-	 *
-	 * @param newLogMessage The new log message that has been generated.
+	 * Notifies all listeners about a change in the log.
+	 * 
+	 * @param newLogMessage The new log message that listeners are notified about.
 	 */
 	private void fireLogChanged(String newLogMessage) {
-		// Notify all listeners about the log change.
 		logSupport.firePropertyChange("log", null, newLogMessage);
 	}
 
 	/**
-	 * Adds a new PropertyChangeListener to listen for log changes.
-	 *
-	 * @param listener The listener to add.
+	 * Adds a PropertyChangeListener to the list of listeners that are notified of
+	 * log changes.
+	 * 
+	 * @param listener The PropertyChangeListener to add.
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		logSupport.addPropertyChangeListener(listener);
 	}
 
 	/**
-	 * Logs the information about producer count, how many have been added, and how
-	 * many removed.
-	 *
-	 * @param count   The total number of producers.
-	 * @param added   The number of producers added.
-	 * @param removed The number of producers removed.
+	 * Logs information about the count, addition, and removal of producers.
+	 * 
+	 * @param count   The total count of producers.
+	 * @param added   The count of producers added.
+	 * @param removed The count of producers removed.
 	 */
 	public void logProducerInfo(int count, int added, int removed) {
 		String message = String.format("Total producers: %d, Added: %d, Removed: %d", count, added, removed);
@@ -201,10 +202,10 @@ public class LoggerSingleton {
 	}
 
 	/**
-	 * Logs the intervals at which producers are generating data.
+	 * Logs information about producer intervals.
 	 */
 	public void logProducerIntervals() {
-		String message = loadBalancer.getProducerIntervals().toString();
+		String message = bufferSizeProvider.getProducerIntervals().toString();
 		logInformation(message);
 	}
 }

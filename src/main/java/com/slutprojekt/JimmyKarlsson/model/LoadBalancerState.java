@@ -4,16 +4,20 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Immutable record that encapsulates the state of a LoadBalancer. This includes
- * the current delays for producers and consumers, the capacity of the buffer,
- * and its current size. Implements Serializable so that its state can be
- * serialized for persistence or network transmission.
+ * Immutable record representing the state of a LoadBalancer at a snapshot in
+ * time. It is useful for monitoring and managing the flow of items between
+ * producers and consumers by providing essential details about their operation.
+ * This record is serializable, allowing it to be easily stored or transmitted.
  */
-public record LoadBalancerState(List<Integer> producerDelays, // Delays for each producer in seconds.
-		List<Integer> consumerDelays, // Delays for each consumer in seconds.
-		int bufferCapacity, // Maximum number of items the buffer can hold.
-		int currentBufferSize // Current number of items in the buffer.
+public record LoadBalancerState(List<Integer> producerDelays, // List of delays for producers, representing the time in
+																// seconds before a producer can produce the next item.
+		List<Integer> consumerDelays, // List of delays for consumers, representing the time in seconds before a
+										// consumer can consume the next item.
+		int bufferCapacity, // The maximum number of items the buffer can hold at any given time.
+		int currentBufferSize // The current count of items present in the buffer.
 ) implements Serializable {
 
-	private static final long serialVersionUID = 1L; // UID for serialization, ensuring version compatibility.
+	// Serial Version UID for serialization. If any change is made to this record,
+	// consider altering the UID to maintain the integrity of serialized objects.
+	private static final long serialVersionUID = 1L;
 }
